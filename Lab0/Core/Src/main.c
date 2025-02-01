@@ -92,8 +92,10 @@ int main(void) {
     /* USER CODE BEGIN WHILE */
     while (1) {
         /* USER CODE END WHILE */
-        HAL_GPIO_TogglePin(LED0_GPIO_Port, LED0_Pin);
-        HAL_Delay(1000);
+        if (HAL_GPIO_ReadPin(SW3_GPIO_Port, SW3_Pin) == GPIO_PIN_RESET) {
+            HAL_GPIO_TogglePin(LED0_GPIO_Port, LED0_Pin);
+        }
+        HAL_Delay(500);
         /* USER CODE BEGIN 3 */
     }
     /* USER CODE END 3 */
@@ -157,7 +159,7 @@ static void MX_GPIO_Init(void) {
     /*Configure GPIO pin : SW3_Pin */
     GPIO_InitStruct.Pin = SW3_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
     HAL_GPIO_Init(SW3_GPIO_Port, &GPIO_InitStruct);
 
     /*Configure GPIO pin : LED0_Pin */
