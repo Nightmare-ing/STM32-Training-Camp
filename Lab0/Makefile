@@ -10,7 +10,6 @@ ${BUILD_DIR}/Makefile:
 	cmake \
 		-B${BUILD_DIR} \
 		-DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
-		-DCMAKE_TOOLCHAIN_FILE=cmake/gcc-arm-none-eabi.cmake \
 		-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
 cmake: ${BUILD_DIR}/Makefile
