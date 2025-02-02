@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.29.6)
 
-include(cmake/gcc-arm-none-eabi.cmake)
+include(../gcc-arm-none-eabi.cmake)
 include(cmake/mcu.cmake)
 
 project(Lab0)
