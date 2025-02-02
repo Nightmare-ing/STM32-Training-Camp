@@ -21,4 +21,14 @@ is mentioned in term $R_{PU}$ and $R_{PD}$.
 
 ### Problem 2
 
+Required to implement the function that, when the button is pushed down, 
+the light is lighted, when it's released, `LED0` is turned off.
 
+Also implement the same function for 4 LED lights, by the method that, 
+store all pin port and pin value into arrays, then use for loop to toggle 
+every light depending on the status of every button.
+
+### Problem 3
+
+Required to implement the function that, when detecting the negative edge 
+of the button signal, toggle the status of the LED light.
