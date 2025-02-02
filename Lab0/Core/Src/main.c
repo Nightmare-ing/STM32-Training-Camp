@@ -85,13 +85,19 @@ int main(void) {
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
     /* USER CODE BEGIN 2 */
-
+    uint32_t prev = 0, curr = 0;
     /* USER CODE END 2 */
 
     /* Infinite loop */
     /* USER CODE BEGIN WHILE */
-    // Part 2, problem 2, practice of Lab0
+    //
     while (1) {
+        curr = HAL_GPIO_ReadPin(SW3_GPIO_Port, SW3_Pin);
+        if (prev == GPIO_PIN_SET && curr == GPIO_PIN_RESET) {
+            HAL_GPIO_TogglePin(LED0_GPIO_Port, LED0_Pin);
+        }
+        prev = curr;
+        /* Part 2, problem 2, practice of Lab0
         uint16_t buttons_pin[4] = {SW0_Pin, SW1_Pin, SW2_Pin, SW3_Pin};
         GPIO_TypeDef* buttons_port[4] = {SW0_GPIO_Port, SW1_GPIO_Port, SW2_GPIO_Port, SW3_GPIO_Port};
         uint16_t led_pin[4] = {LED0_Pin, LED1_Pin, LED2_Pin, LED3_Pin};
@@ -103,6 +109,7 @@ int main(void) {
                 HAL_GPIO_WritePin(led_port[i], led_pin[i], GPIO_PIN_RESET);
             }
         }
+        */
         /* Part 1, problem 2, practice of Lab0
         if (HAL_GPIO_ReadPin(SW3_GPIO_Port, SW3_Pin) == GPIO_PIN_RESET) {
             HAL_GPIO_WritePin(LED0_GPIO_Port, LED0_Pin, GPIO_PIN_SET);
