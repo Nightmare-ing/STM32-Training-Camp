@@ -90,12 +90,26 @@ int main(void) {
 
     /* Infinite loop */
     /* USER CODE BEGIN WHILE */
+    // Part 2, problem 2, practice of Lab0
     while (1) {
+        uint16_t buttons_pin[4] = {SW0_Pin, SW1_Pin, SW2_Pin, SW3_Pin};
+        GPIO_TypeDef* buttons_port[4] = {SW0_GPIO_Port, SW1_GPIO_Port, SW2_GPIO_Port, SW3_GPIO_Port};
+        uint16_t led_pin[4] = {LED0_Pin, LED1_Pin, LED2_Pin, LED3_Pin};
+        GPIO_TypeDef* led_port[4] = {LED0_GPIO_Port, LED1_GPIO_Port, LED2_GPIO_Port, LED3_GPIO_Port};
+        for (uint32_t i = 0; i < 4; ++i) {
+            if (HAL_GPIO_ReadPin(buttons_port[i], buttons_pin[i]) == GPIO_PIN_RESET) {
+                HAL_GPIO_WritePin(led_port[i], led_pin[i], GPIO_PIN_SET);
+            } else {
+                HAL_GPIO_WritePin(led_port[i], led_pin[i], GPIO_PIN_RESET);
+            }
+        }
+        /* Part 1, problem 2, practice of Lab0
         if (HAL_GPIO_ReadPin(SW3_GPIO_Port, SW3_Pin) == GPIO_PIN_RESET) {
             HAL_GPIO_WritePin(LED0_GPIO_Port, LED0_Pin, GPIO_PIN_SET);
         } else {
             HAL_GPIO_WritePin(LED0_GPIO_Port, LED0_Pin, GPIO_PIN_RESET);
         }
+        */
         /* USER CODE END WHILE */
 
         /* USER CODE BEGIN 3 */
