@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.29.6)
 
-include(../gcc-arm-none-eabi.cmake)
+include(../cmake/gcc-arm-none-eabi.cmake)
 include(cmake/mcu.cmake)
 
-project(Lab0)
+project(Lab1)
 set(PROJECT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 set(EXECUTABLE ${CMAKE_PROJECT_NAME})
@@ -18,10 +18,10 @@ set(CMAKE_CXX_EXTENSIONS ON)
 # Headers
 set(CUBEMX_INCLUDE_DIR
         ${CMAKE_CURRENT_SOURCE_DIR}/Core/Inc
-        ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/${MCU_FAMILY}_HAL_Driver/Inc
-        ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/${MCU_FAMILY}_HAL_Driver/Inc/Legacy
-        ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/CMSIS/Device/ST/${MCU_FAMILY}/Include
-        ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/CMSIS/Include)
+        ../STM32Cube_FW_G4_V1.6.1/Drivers/STM32G4xx_HAL_Driver/Inc
+        ../STM32Cube_FW_G4_V1.6.1/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy
+        ../STM32Cube_FW_G4_V1.6.1/Drivers/CMSIS/Device/ST/STM32G4xx/Include
+        ../STM32Cube_FW_G4_V1.6.1/Drivers/CMSIS/Include)
 set(PROJECT_INCLUDE_DIR
         ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_DIR})
 
@@ -30,19 +30,19 @@ set(STM32CUBEMX_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/main.c
         ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/stm32g4xx_it.c
         ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/stm32g4xx_hal_msp.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_pwr_ex.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_rcc.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_rcc_ex.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash_ex.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash_ramfunc.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_gpio.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_exti.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dma.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dma_ex.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_pwr.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_cortex.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../STM32Cube_FW_G4_V1.6.1/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_pwr_ex.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../STM32Cube_FW_G4_V1.6.1/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../STM32Cube_FW_G4_V1.6.1/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_rcc.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../STM32Cube_FW_G4_V1.6.1/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_rcc_ex.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../STM32Cube_FW_G4_V1.6.1/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../STM32Cube_FW_G4_V1.6.1/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash_ex.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../STM32Cube_FW_G4_V1.6.1/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash_ramfunc.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../STM32Cube_FW_G4_V1.6.1/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_gpio.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../STM32Cube_FW_G4_V1.6.1/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_exti.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../STM32Cube_FW_G4_V1.6.1/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dma.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../STM32Cube_FW_G4_V1.6.1/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dma_ex.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../STM32Cube_FW_G4_V1.6.1/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_pwr.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../STM32Cube_FW_G4_V1.6.1/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_cortex.c
         ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/system_stm32g4xx.c
         ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/sysmem.c
         ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/syscalls.c)
