@@ -85,6 +85,7 @@ int main(void) {
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
     /* USER CODE BEGIN 2 */
+    // previous button state, current state.
     uint32_t prev = 0, curr = 0;
     /* USER CODE END 2 */
 
@@ -97,6 +98,7 @@ int main(void) {
             HAL_GPIO_TogglePin(LED0_GPIO_Port, LED0_Pin);
         }
         prev = curr;
+
         /* Part 2, problem 2, practice of Lab0
         uint16_t buttons_pin[4] = {SW0_Pin, SW1_Pin, SW2_Pin, SW3_Pin};
         GPIO_TypeDef* buttons_port[4] = {SW0_GPIO_Port, SW1_GPIO_Port, SW2_GPIO_Port, SW3_GPIO_Port};
@@ -110,6 +112,7 @@ int main(void) {
             }
         }
         */
+
         /* Part 1, problem 2, practice of Lab0
         if (HAL_GPIO_ReadPin(SW3_GPIO_Port, SW3_Pin) == GPIO_PIN_RESET) {
             HAL_GPIO_WritePin(LED0_GPIO_Port, LED0_Pin, GPIO_PIN_SET);
