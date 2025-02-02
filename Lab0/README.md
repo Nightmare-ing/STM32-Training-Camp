@@ -13,10 +13,12 @@ Lab0 contains two parts
 
 ### Problem 1
 
-The resistor value for GPIO with pull-up and pull-down is $55k\Omega$, 
+The resistor value for GPIO with pull-up and pull-down is between 
+$25k\Omega$ and $55k\Omega$, typical value is $40k\Omega$,
 mentioned in `stm32g474ve.pdf` (datasheet of STM32G474VE, DS12288 Rev 6) at 
 page 128, in table 54 which is about I/O static characteristics. The value 
 is mentioned in term $R_{PU}$ and $R_{PD}$.
 
 ### Problem 2
+
 
