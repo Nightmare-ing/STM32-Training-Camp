@@ -19,6 +19,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
+#include <stdbool.h>
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -85,15 +87,36 @@ int main(void) {
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
     /* USER CODE BEGIN 2 */
-    const int32_t COUNTER_NUM = 100;
+    const int32_t COUNTER_NUM = 10;
     // Define previous status, current status, and two temporary status
-    GPIO_PinState prev = 0, curr = 0, temp_prev = 0, temp_curr = 0;
+    GPIO_PinState prev = 0, curr = 0;
+    // GPIO_PinState temp_prev = 0, temp_curr = 0;
     int32_t counter = COUNTER_NUM;
+    bool idle = true;
     /* USER CODE END 2 */
 
     /* Infinite loop */
     /* USER CODE BEGIN WHILE */
     while (1) {
+        curr = HAL_GPIO_ReadPin(SW3_GPIO_Port, SW3_Pin);
+        // Once capture the status change, set idle to false, and toggle the LED
+        if (idle == true && curr == GPIO_PIN_RESET && prev == GPIO_PIN_SET) {
+            HAL_GPIO_TogglePin(LED0_GPIO_Port, LED0_Pin);
+            idle = false;
+        }
+        prev = curr;
+
+        // Once capture the status change, ignore the status change for COUNTER_NUM cycles
+        if (idle == false) {
+            --counter;
+        }
+
+        // Once be busy for COUNTER_NUM cycles, change status to idle again, and reset the counter
+        if (counter == 0) {
+            idle = true;
+            counter = COUNTER_NUM;
+        }
+        /* Debouncing Method 1
         temp_curr = HAL_GPIO_ReadPin(SW3_GPIO_Port, SW3_Pin);
         // When the status of the button doesn't consistent for COUNTER_NUM cycles, recount
         if (temp_curr != temp_prev) {
@@ -112,6 +135,7 @@ int main(void) {
             prev = curr;
             counter = COUNTER_NUM;
         }
+        */
         /* USER CODE END WHILE */
 
         /* USER CODE BEGIN 3 */
