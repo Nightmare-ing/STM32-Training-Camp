@@ -85,12 +85,33 @@ int main(void) {
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
     /* USER CODE BEGIN 2 */
-
+    const int32_t COUNTER_NUM = 100;
+    // Define previous status, current status, and two temporary status
+    GPIO_PinState prev = 0, curr = 0, temp_prev = 0, temp_curr = 0;
+    int32_t counter = COUNTER_NUM;
     /* USER CODE END 2 */
 
     /* Infinite loop */
     /* USER CODE BEGIN WHILE */
     while (1) {
+        temp_curr = HAL_GPIO_ReadPin(SW3_GPIO_Port, SW3_Pin);
+        // When the status of the button doesn't consistent for COUNTER_NUM cycles, recount
+        if (temp_curr != temp_prev) {
+            counter = COUNTER_NUM;
+        } else {
+            --counter;
+        }
+        temp_prev = temp_curr;
+
+        // When the status of the button doesn't change for COUNTER_NUM cycles, then update the status of the button
+        if (counter == 0) {
+            curr = temp_curr;
+            if (curr == GPIO_PIN_RESET && prev == GPIO_PIN_SET) {
+                HAL_GPIO_TogglePin(LED0_GPIO_Port, LED0_Pin);
+            }
+            prev = curr;
+            counter = COUNTER_NUM;
+        }
         /* USER CODE END WHILE */
 
         /* USER CODE BEGIN 3 */
