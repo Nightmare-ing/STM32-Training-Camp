@@ -86,36 +86,47 @@ int main(void) {
     MX_GPIO_Init();
     /* USER CODE BEGIN 2 */
     uint32_t digit = 0;
-    int32_t digits[] = {
+    const int32_t DIGITS[] = {
         0x3F, 0x06, 0x5B, 0x4F,
         0x66, 0x6D, 0x7D, 0x07,
         0x7F, 0x6F, 0x77, 0x7C,
         0x39, 0x5E, 0x79, 0x71
     };
-    uint32_t segs_pin[] = {
+    const uint32_t SEGS_PIN[] = {
         SEG0_Pin, SEG1_Pin, SEG2_Pin, SEG3_Pin,
         SEG4_Pin, SEG5_Pin, SEG6_Pin, SEG7_Pin
     };
-    GPIO_TypeDef *segs_pin_port[] = {
+    const GPIO_TypeDef *SEGS_PIN_PORT[] = {
         SEG0_GPIO_Port, SEG1_GPIO_Port, SEG2_GPIO_Port, SEG3_GPIO_Port,
         SEG4_GPIO_Port, SEG5_GPIO_Port, SEG6_GPIO_Port, SEG7_GPIO_Port
     };
+    const uint32_t DIG_PIN[] = {
+        DIG0_Pin, DIG1_Pin, DIG2_Pin, DIG3_Pin
+    };
+    const GPIO_TypeDef *DIG_PIN_PORT[] = {
+        DIG0_GPIO_Port, DIG1_GPIO_Port, DIG2_GPIO_Port, DIG3_GPIO_Port
+    };
 
-    HAL_GPIO_WritePin(DIG0_GPIO_Port, DIG0_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(DIG1_GPIO_Port, DIG1_Pin, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(DIG2_GPIO_Port, DIG2_Pin, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(DIG3_GPIO_Port, DIG3_Pin, GPIO_PIN_RESET);
+    // Dim all digital tubes
+    for (uint32_t i = 0; i < 4; ++i) {
+        HAL_GPIO_WritePin((GPIO_TypeDef *) DIG_PIN_PORT[i], DIG_PIN[i], GPIO_PIN_RESET);
+    }
 
     /* USER CODE END 2 */
 
     /* Infinite loop */
     /* USER CODE BEGIN WHILE */
     while (1) {
-        for (uint32_t i = 0; i < 8; ++i) {
-            HAL_GPIO_WritePin(segs_pin_port[i], segs_pin[i], digits[digit] & (1 << i));
+        for (uint32_t i = 0; i < 4; ++i) {
+            GPIO_PinState pin_status = (i == digit) ? GPIO_PIN_SET : GPIO_PIN_RESET;
+            HAL_GPIO_WritePin((GPIO_TypeDef *) DIG_PIN_PORT[i], DIG_PIN[i], pin_status);
         }
-        digit = (digit + 1) % 16;
-        HAL_Delay(1000);
+
+        for (uint32_t i = 0; i < 8; ++i) {
+            HAL_GPIO_WritePin((GPIO_TypeDef *) SEGS_PIN_PORT[i], SEGS_PIN[i], DIGITS[digit] & (1 << i));
+        }
+        digit = (digit + 1) % 4;
+        HAL_Delay(1);
         /* USER CODE END WHILE */
 
         /* USER CODE BEGIN 3 */
