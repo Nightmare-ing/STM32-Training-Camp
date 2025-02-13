@@ -51,6 +51,11 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_TIM15_Init(void);
 /* USER CODE BEGIN PFP */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim) {
+    if (htim == &htim15) {
+        HAL_GPIO_TogglePin(BUZ_GPIO_Port, BUZ_Pin);
+    }
+}
 
 /* USER CODE END PFP */
 
@@ -88,6 +93,7 @@ int main(void) {
     MX_GPIO_Init();
     MX_TIM15_Init();
     /* USER CODE BEGIN 2 */
+    HAL_TIM_Base_Start_IT(&htim15);
 
     /* USER CODE END 2 */
 
