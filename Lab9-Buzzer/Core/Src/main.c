@@ -40,7 +40,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-TIM_HandleTypeDef htim15;
+TIM_HandleTypeDef htim3;
 
 /* USER CODE BEGIN PV */
 
@@ -49,13 +49,8 @@ TIM_HandleTypeDef htim15;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_TIM15_Init(void);
+static void MX_TIM3_Init(void);
 /* USER CODE BEGIN PFP */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim) {
-    if (htim == &htim15) {
-        HAL_GPIO_TogglePin(BUZ_GPIO_Port, BUZ_Pin);
-    }
-}
 
 /* USER CODE END PFP */
 
@@ -91,16 +86,19 @@ int main(void) {
 
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
-    MX_TIM15_Init();
+    MX_TIM3_Init();
     /* USER CODE BEGIN 2 */
-    HAL_TIM_Base_Start_IT(&htim15);
-
+    HAL_TIM_OC_Start(&htim3, TIM_CHANNEL_2);
     /* USER CODE END 2 */
 
     /* Infinite loop */
     /* USER CODE BEGIN WHILE */
     while (1) {
         /* USER CODE END WHILE */
+        __HAL_TIM_SET_AUTORELOAD(&htim3, 113);
+        HAL_Delay(999);
+        __HAL_TIM_SET_AUTORELOAD(&htim3, 142);
+        HAL_Delay(999);
 
         /* USER CODE BEGIN 3 */
     }
@@ -150,43 +148,46 @@ void SystemClock_Config(void) {
 }
 
 /**
-  * @brief TIM15 Initialization Function
+  * @brief TIM3 Initialization Function
   * @param None
   * @retval None
   */
-static void MX_TIM15_Init(void) {
-    /* USER CODE BEGIN TIM15_Init 0 */
+static void MX_TIM3_Init(void) {
+    /* USER CODE BEGIN TIM3_Init 0 */
 
-    /* USER CODE END TIM15_Init 0 */
+    /* USER CODE END TIM3_Init 0 */
 
-    TIM_ClockConfigTypeDef sClockSourceConfig = {0};
     TIM_MasterConfigTypeDef sMasterConfig = {0};
+    TIM_OC_InitTypeDef sConfigOC = {0};
 
-    /* USER CODE BEGIN TIM15_Init 1 */
+    /* USER CODE BEGIN TIM3_Init 1 */
 
-    /* USER CODE END TIM15_Init 1 */
-    htim15.Instance = TIM15;
-    htim15.Init.Prescaler = 999;
-    htim15.Init.CounterMode = TIM_COUNTERMODE_UP;
-    htim15.Init.Period = 113;
-    htim15.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-    htim15.Init.RepetitionCounter = 0;
-    htim15.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-    if (HAL_TIM_Base_Init(&htim15) != HAL_OK) {
-        Error_Handler();
-    }
-    sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-    if (HAL_TIM_ConfigClockSource(&htim15, &sClockSourceConfig) != HAL_OK) {
+    /* USER CODE END TIM3_Init 1 */
+    htim3.Instance = TIM3;
+    htim3.Init.Prescaler = 999;
+    htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+    htim3.Init.Period = 113;
+    htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+    htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+    if (HAL_TIM_OC_Init(&htim3) != HAL_OK) {
         Error_Handler();
     }
     sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
     sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-    if (HAL_TIMEx_MasterConfigSynchronization(&htim15, &sMasterConfig) != HAL_OK) {
+    if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK) {
         Error_Handler();
     }
-    /* USER CODE BEGIN TIM15_Init 2 */
+    sConfigOC.OCMode = TIM_OCMODE_TOGGLE;
+    sConfigOC.Pulse = 0;
+    sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+    sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+    if (HAL_TIM_OC_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_2) != HAL_OK) {
+        Error_Handler();
+    }
+    /* USER CODE BEGIN TIM3_Init 2 */
 
-    /* USER CODE END TIM15_Init 2 */
+    /* USER CODE END TIM3_Init 2 */
+    HAL_TIM_MspPostInit(&htim3);
 }
 
 /**
@@ -195,7 +196,6 @@ static void MX_TIM15_Init(void) {
   * @retval None
   */
 static void MX_GPIO_Init(void) {
-    GPIO_InitTypeDef GPIO_InitStruct = {0};
     /* USER CODE BEGIN MX_GPIO_Init_1 */
     /* USER CODE END MX_GPIO_Init_1 */
 
@@ -203,16 +203,6 @@ static void MX_GPIO_Init(void) {
     __HAL_RCC_GPIOF_CLK_ENABLE();
     __HAL_RCC_GPIOA_CLK_ENABLE();
     __HAL_RCC_GPIOB_CLK_ENABLE();
-
-    /*Configure GPIO pin Output Level */
-    HAL_GPIO_WritePin(BUZ_GPIO_Port, BUZ_Pin, GPIO_PIN_RESET);
-
-    /*Configure GPIO pin : BUZ_Pin */
-    GPIO_InitStruct.Pin = BUZ_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(BUZ_GPIO_Port, &GPIO_InitStruct);
 
     /* USER CODE BEGIN MX_GPIO_Init_2 */
     /* USER CODE END MX_GPIO_Init_2 */
